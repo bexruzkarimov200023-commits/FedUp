@@ -8,8 +8,8 @@ import Kontakt from './pages/Kontakt'
 import Menu from './pages/Menu'
 import Onas from './pages/Onas'
 import Vakansi from './pages/Vakansi'
-import { Road } from 'lucide-react'
-import { RuleTester } from 'eslint'
+import { Routes, Route } from 'react-router-dom'
+
 export default function App() {
   return (
     <div>
