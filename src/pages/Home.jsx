@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 const slides = [
   {
@@ -57,7 +58,13 @@ const slides = [
   },
 ]
 
-const NAV_LINKS = ['About Us', 'Menu', 'Stock', 'Vacancies', 'Branches', 'Contacts']
+const NAV_LINKS = [
+  { label: 'About Us', path: '/O nas' },
+  { label: 'Menu', path: '/menu' },
+  { label: 'Vacancies', path: '/vakansi' },
+  { label: 'Branches', path: '/filial' },
+  { label: 'Contacts', path: '/kontakt' }
+]
 
 export default function Home() {
   const [current, setCurrent] = useState(0)
@@ -141,46 +148,7 @@ export default function Home() {
         }
       `}</style>
 
-      <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 32px', height: 64,
-        background: '#fff', borderBottom: '1.5px solid #f0f0f0',
-        position: 'sticky', top: 0, zIndex: 100,
-        boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-      }}>
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, cursor: 'pointer', userSelect: 'none' }}>
-          <span style={{ fontSize: 22, fontWeight: 900, letterSpacing: -1, color: '#111' }}>feed</span>
-          <span style={{
-            background: '#e8000e', color: '#fff', borderRadius: '50%',
-            width: 32, height: 32, display: 'inline-flex', alignItems: 'center',
-            justifyContent: 'center', fontSize: 16, marginLeft: 3, fontWeight: 900,
-          }}>up</span>
-        </div>
-
-        
-        <ul style={{ display: 'flex', gap: 28, listStyle: 'none' }}>
-          {NAV_LINKS.map(link => (
-            <li key={link}>
-              <a href="#" className="nav-link">{link}</a>
-            </li>
-          ))}
-        </ul>
-
-       
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <button className="btn-order">Order type</button>
-          <div>
-            <div style={{ fontSize: 15, fontWeight: 800, color: '#111' }}>+998 71 200 22 11</div>
-            <div style={{ fontSize: 11, color: '#888', fontWeight: 600 }}>Daily from 09:00 to 02:45</div>
-          </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            {['🔍','🛒','🤍','🌐','👤','🌙'].map((icon, i) => (
-              <button key={i} className="nav-icon-btn">{icon}</button>
-            ))}
-          </div>
-        </div>
-      </nav>
+      
 
      
       <div
