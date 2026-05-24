@@ -25,7 +25,7 @@ export default function Header() {
             />
           </Link>
 
-          <Link to={"/O nas"}>О нас</Link>
+          <Link to={"/O nas"}>O нас</Link>
           <Link to={"/menu"}>Меню</Link>
           <Link to={"/vakansi"}>Вакансии</Link>
           <Link to={"/filial"}>Филиалы</Link>
