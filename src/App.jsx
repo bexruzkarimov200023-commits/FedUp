@@ -9,8 +9,8 @@ import Menu from './pages/Menu'
 import Onas from './pages/Onas'
 import Vakansi from './pages/Vakansi'
 import { Routes, Route } from 'react-router-dom'
-
-
+import Favorites from './pages/Fovorites'
+import Card from './pages/Card'
 export default function App() {
   return (
     <div>
@@ -23,6 +23,8 @@ export default function App() {
       <Route path='/menu' element={<Menu/>}/>
       <Route path='/O nas' element={<Onas/>}/>
       <Route path='/vakansi' element={<Vakansi/>}/>
+      <Route path='/favorites' element={<Favorites/>}/>
+      <Route path='/card' element={<Card/>}/>
     </Routes>
   <Footer/>
 </React.Fragment>
