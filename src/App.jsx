@@ -10,6 +10,7 @@ import Onas from './pages/Onas'
 import Vakansi from './pages/Vakansi'
 import { Routes, Route } from 'react-router-dom'
 
+
 export default function App() {
   return (
     <div>
