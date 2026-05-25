@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IoIosHeart } from 'react-icons/io'
+import { zustandStore } from '../utils/zustandStore'
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState([])
   const navigate = useNavigate()
+  const { darkMode } = zustandStore()
 
   useEffect(() => {
     // localStorage dan favorites o'qish
@@ -37,13 +39,20 @@ export default function Favorites() {
   }
 
   return (
-    <div style={{ padding: '40px 80px', minHeight: '80vh', background: '#fcfcfc' }}>
-      <h1 style={{ fontSize: 32, fontWeight: 900, color: '#111', marginBottom: 30 }}>
+    <div style={{ 
+      paddingTop: '80px', 
+      padding: '40px 80px', 
+      minHeight: '100vh', 
+      background: darkMode ? '#1a1a1a' : '#fcfcfc',
+      color: darkMode ? '#fff' : '#111',
+      transition: 'background 0.3s, color 0.3s'
+    }}>
+      <h1 style={{ fontSize: 32, fontWeight: 900, color: darkMode ? '#fff' : '#111', marginBottom: 30 }}>
         ❤️ Sevimli Mahsulotlar ({favorites.length})
       </h1>
 
       {favorites.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#999' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: darkMode ? '#999' : '#999' }}>
           <p style={{ fontSize: 18, marginBottom: 20 }}>Hozircha sevimli mahsulot yo'q</p>
           <button 
             onClick={() => navigate('/')}
@@ -68,10 +77,14 @@ export default function Favorites() {
             <div 
               key={product.id}
               style={{
-                background: '#fff', borderRadius: 24, padding: 24,
-                boxShadow: '0 5px 15px rgba(0,0,0,0.08)',
-                border: '2px solid #e8000e', position: 'relative',
-                transition: 'transform 0.3s'
+                background: darkMode ? '#2a2a2a' : '#fff', 
+                borderRadius: 24, 
+                padding: 24,
+                boxShadow: `0 5px 15px rgba(0,0,0,${darkMode ? '0.3' : '0.08'})`,
+                border: '2px solid #e8000e', 
+                position: 'relative',
+                transition: 'transform 0.3s',
+                color: darkMode ? '#fff' : '#111'
               }}
               onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-6px)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
@@ -93,10 +106,10 @@ export default function Favorites() {
               </button>
 
               <div style={{ fontSize: 80, marginBottom: 15 }}>{product.emoji}</div>
-              <h3 style={{ fontSize: 18, fontWeight: 800, color: '#111', marginBottom: 8 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 800, color: darkMode ? '#fff' : '#111', marginBottom: 8 }}>
                 {product.name}
               </h3>
-              <p style={{ fontSize: 13, color: '#666', marginBottom: 15 }}>
+              <p style={{ fontSize: 13, color: darkMode ? '#aaa' : '#666', marginBottom: 15 }}>
                 {product.desc}
               </p>
               <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 15 }}>
@@ -106,7 +119,7 @@ export default function Favorites() {
                 {product.oldPrice && (
                   <span style={{
                     fontSize: 16, textDecoration: 'line-through',
-                    color: '#999'
+                    color: darkMode ? '#666' : '#999'
                   }}>
                     {product.oldPrice}
                   </span>

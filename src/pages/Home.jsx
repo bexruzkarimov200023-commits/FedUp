@@ -98,6 +98,7 @@ export default function Home() {
   const [favorites, setFavorites] = useState([])
   const [cart, setCart] = useState([])
   const navigate = useNavigate()
+  const { darkMode } = zustandStore()
   const timerRef = useRef(null)
 
   const goTo = (n) => setCurrent((n + slides.length) % slides.length)
@@ -158,12 +159,19 @@ export default function Home() {
   const s = slides[current]
 
   return (
-    <div style={{ fontFamily: "'Nunito', sans-serif", margin: 0, padding: 0 }}>
+    <div style={{ 
+      fontFamily: "'Nunito', sans-serif", 
+      margin: 0, 
+      padding: 0,
+      background: darkMode ? '#1a1a1a' : '#fcfcfc',
+      color: darkMode ? '#fff' : '#111',
+      transition: 'background 0.3s, color 0.3s'
+    }}>
       
       <style>{`
         @import url('https://googleapis.com');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { overflow-x: hidden; background-color: #fcfcfc; }
+        body { overflow-x: hidden; }
         .nav-link {
           text-decoration: none; color: #222; font-size: 15px; font-weight: 700;
           position: relative; padding-bottom: 3px; transition: color .2s;
@@ -215,14 +223,21 @@ export default function Home() {
           margin-top: 30px;
         }
         .product-card {
-          background: #fff; border-radius: 24px; padding: 24px;
-          box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: all 0.3s ease;
-          position: relative; border: 1px solid #f0f0f0;
-          display: flex; flex-direction: column; justify-content: space-between;
+          background: ${darkMode ? '#2a2a2a' : '#fff'}; 
+          border-radius: 24px; 
+          padding: 24px;
+          box-shadow: 0 5px 15px rgba(0,0,0,${darkMode ? '0.3' : '0.03'}); 
+          transition: all 0.3s ease;
+          position: relative; 
+          border: 1px solid ${darkMode ? '#333' : '#f0f0f0'};
+          display: flex; 
+          flex-direction: column; 
+          justify-content: space-between;
+          color: ${darkMode ? '#fff' : '#111'};
         }
         .product-card:hover {
           transform: translateY(-6px);
-          box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+          box-shadow: 0 12px 30px rgba(0,0,0,${darkMode ? '0.5' : '0.08'});
         }
       `}</style>
 
@@ -334,8 +349,8 @@ export default function Home() {
       </div>
 
       {/* MAHSULOTLAR RO'YXATI */}
-      <div style={{ padding: '40px 80px' }}>
-        <h2 style={{ fontSize: 32, fontWeight: 900, color: '#111', marginBottom: 10 }}>
+      <div style={{ paddingTop: '60px', padding: '40px 80px' }}>
+        <h2 style={{ fontSize: 32, fontWeight: 900, color: darkMode ? '#fff' : '#111', marginBottom: 10 }}>
           Bizning maxsus taklif (100+ Mahsulot)
         </h2>
         <div className="product-grid">
@@ -365,10 +380,10 @@ export default function Home() {
                 </button>
 
                 <div style={{ fontSize: 80, marginBottom: 15 }}>{product.emoji}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 800, color: '#111', marginBottom: 8 }}>
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: darkMode ? '#fff' : '#111', marginBottom: 8 }}>
                   {product.name}
                 </h3>
-                <p style={{ fontSize: 13, color: '#666', marginBottom: 15, flexGrow: 1 }}>
+                <p style={{ fontSize: 13, color: darkMode ? '#aaa' : '#666', marginBottom: 15, flexGrow: 1 }}>
                   {product.desc}
                 </p>
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -380,7 +395,7 @@ export default function Home() {
                   {product.oldPrice && (
                     <span style={{
                       fontSize: 16, textDecoration: 'line-through',
-                      color: '#999'
+                      color: darkMode ? '#666' : '#999'
                     }}>
                       {product.oldPrice}
                     </span>

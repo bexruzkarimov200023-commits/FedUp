@@ -1,20 +1,37 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { zustandStore } from '../utils/zustandStore'
 
 export default function Card() {
   const [cartItems, setCartItems] = useState([])
   const navigate = useNavigate()
+  const { darkMode } = zustandStore()
 
+  // INITIAL LOAD VA STORAGE CHANGE LISTENER
   useEffect(() => {
-    // localStorage dan cart o'qish
-    const stored = localStorage.getItem('cart')
-    if (stored) {
-      try {
-        setCartItems(JSON.parse(stored))
-      } catch (e) {
-        console.error('Error parsing cart:', e)
+    const loadCart = () => {
+      const stored = localStorage.getItem('cart')
+      if (stored) {
+        try {
+          setCartItems(JSON.parse(stored))
+        } catch (e) {
+          console.error('Error parsing cart:', e)
+        }
       }
     }
+
+    // Birinchi load
+    loadCart()
+
+    // Storage change listener
+    const handleStorageChange = (e) => {
+      if (e.key === 'cart' || !e.key) {
+        loadCart()
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
   const handleRemove = (cartId) => {
@@ -50,13 +67,20 @@ export default function Card() {
   }
 
   return (
-    <div style={{ padding: '40px 80px', minHeight: '80vh', background: '#fcfcfc' }}>
-      <h1 style={{ fontSize: 32, fontWeight: 900, color: '#111', marginBottom: 30 }}>
+    <div style={{ 
+      paddingTop: '80px', 
+      padding: '40px 80px', 
+      minHeight: '100vh', 
+      background: darkMode ? '#1a1a1a' : '#fcfcfc',
+      color: darkMode ? '#fff' : '#111',
+      transition: 'background 0.3s, color 0.3s'
+    }}>
+      <h1 style={{ fontSize: 32, fontWeight: 900, color: darkMode ? '#fff' : '#111', marginBottom: 30 }}>
         🛒 Savat ({cartItems.length})
       </h1>
 
       {cartItems.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#999' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: darkMode ? '#999' : '#999' }}>
           <p style={{ fontSize: 18, marginBottom: 20 }}>Savat bo'sh</p>
           <button 
             onClick={() => navigate('/')}
@@ -83,10 +107,14 @@ export default function Card() {
               <div 
                 key={product.cartId}
                 style={{
-                  background: '#fff', borderRadius: 24, padding: 24,
-                  boxShadow: '0 5px 15px rgba(0,0,0,0.08)',
-                  border: '1px solid #e8000e', position: 'relative',
-                  transition: 'transform 0.3s'
+                  background: darkMode ? '#2a2a2a' : '#fff', 
+                  borderRadius: 24, 
+                  padding: 24,
+                  boxShadow: `0 5px 15px rgba(0,0,0,${darkMode ? '0.3' : '0.08'})`,
+                  border: '1px solid #e8000e', 
+                  position: 'relative',
+                  transition: 'transform 0.3s',
+                  color: darkMode ? '#fff' : '#111'
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-6px)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
@@ -108,16 +136,16 @@ export default function Card() {
                 </button>
 
                 <div style={{ fontSize: 80, marginBottom: 15 }}>{product.emoji}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 800, color: '#111', marginBottom: 8 }}>
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: darkMode ? '#fff' : '#111', marginBottom: 8 }}>
                   {product.name}
                 </h3>
-                <p style={{ fontSize: 13, color: '#666', marginBottom: 15 }}>
+                <p style={{ fontSize: 13, color: darkMode ? '#aaa' : '#666', marginBottom: 15 }}>
                   {product.desc}
                 </p>
                 
                 {/* NARX */}
                 <div style={{ marginBottom: 15 }}>
-                  <div style={{ fontSize: 14, color: '#999', marginBottom: 5 }}>
+                  <div style={{ fontSize: 14, color: darkMode ? '#888' : '#999', marginBottom: 5 }}>
                     Bir dona: {parseInt(product.price).toLocaleString('uz-UZ')} so'm
                   </div>
                   <div style={{ fontSize: 22, fontWeight: 900, color: '#e8000e' }}>
@@ -128,7 +156,11 @@ export default function Card() {
                 {/* QUANTITY CONTROLS */}
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: 10, 
-                  background: '#f0f0f0', borderRadius: 12, padding: 8, marginBottom: 15
+                  background: darkMode ? '#1a1a1a' : '#f0f0f0', 
+                  borderRadius: 12, 
+                  padding: 8, 
+                  marginBottom: 15,
+                  border: darkMode ? '1px solid #333' : 'none'
                 }}>
                   <button
                     onClick={() => handleQuantityChange(product.cartId, (product.quantity || 1) - 1)}
@@ -149,7 +181,7 @@ export default function Card() {
                     style={{
                       flex: 1, textAlign: 'center', border: 'none',
                       background: 'transparent', fontSize: 18, fontWeight: 'bold',
-                      color: '#111'
+                      color: darkMode ? '#fff' : '#111'
                     }}
                     min="1"
                   />
@@ -172,12 +204,17 @@ export default function Card() {
 
           {/* JAMI SUMMA */}
           <div style={{
-            background: '#fff', padding: 30, borderRadius: 20,
-            textAlign: 'right', marginBottom: 30, border: '2px solid #e8000e',
-            boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
+            background: darkMode ? '#2a2a2a' : '#fff', 
+            padding: 30, 
+            borderRadius: 20,
+            textAlign: 'right', 
+            marginBottom: 30, 
+            border: '2px solid #e8000e',
+            boxShadow: `0 5px 15px rgba(0,0,0,${darkMode ? '0.3' : '0.08'})`,
+            color: darkMode ? '#fff' : '#111'
           }}>
-            <div style={{ fontSize: 18, color: '#666', marginBottom: 10 }}>
-              Jami mahsulot: <span style={{ fontWeight: 'bold', color: '#111' }}>{cartItems.length} dona</span>
+            <div style={{ fontSize: 18, color: darkMode ? '#aaa' : '#666', marginBottom: 10 }}>
+              Jami mahsulot: <span style={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#111' }}>{cartItems.length} dona</span>
             </div>
             <div style={{ fontSize: 28, fontWeight: 900, color: '#e8000e', marginBottom: 20 }}>
               💰 Jami: {calculateTotal().toLocaleString('uz-UZ')} so'm
