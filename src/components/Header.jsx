@@ -27,7 +27,7 @@ export default function Header() {
                 src="https://feedup.uz/images/feedup/logo.svg"
                 alt="Logo"
                 width={90}
-                className="md:w-[100px]"
+                className="md:w-25"
               />
             </Link>
 
@@ -78,7 +78,7 @@ export default function Header() {
       </div>
 
       {/* 2. MUHIM TO'G'IRLASH: Header fixed bo'lgani uchun uning tagidan bo'sh joy ochib beradi */}
-      <div className="h-[65px] md:h-[75px]" />
+      <div className="h-26 md:h-29" />
 
       {/* Modal oyna qismi o'zgarishsiz qoldi */}
       {open && (
