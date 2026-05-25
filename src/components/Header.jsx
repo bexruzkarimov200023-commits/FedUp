@@ -14,9 +14,9 @@ export default function Header() {
   const { darkMode, toggleDark } = zustandStore();
   return (
     <>
-      <div className={`fixed top-0 left-0 right-0 flex justify-between p-3 z-50 ${darkMode ? "bg-gray-900 text-white border-b border-gray-700" : "bg-white border-b border-gray-200"}`}>
+      <div className={`fixed top-0 left-0 right-0 flex justify-between items-center p-3 z-50 ${darkMode ? "bg-gray-900 text-white border-b border-gray-700" : "bg-white border-b border-gray-200"}`}>
 
-        <div className="flex gap-5 items-center">
+        <div className="flex gap-5 items-center flex-1">
           <Link to={"/"}>
             <img
               src="https://feedup.uz/images/feedup/logo.svg"
@@ -52,9 +52,11 @@ export default function Header() {
           </p>
 
           <button className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><CiSearch size={24} /></button>
-          <button onClick={() => navigate("/card")} className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><HiOutlineShoppingCart size={24} /></button>
-          <button onClick={() => navigate("/favorites")} className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><IoIosHeartEmpty size={24} /></button>
-          <button className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><IoPersonOutline size={24} /></button>
+          <button onClick={() => navigate("/card")} title="Savat" className={darkMode ? "text-gray-400 hover:text-red-500 relative" : "text-gray-600 hover:text-red-600 relative"}>
+            <HiOutlineShoppingCart size={24} />
+          </button>
+          <button onClick={() => navigate("/favorites")} title="Sevimlilar" className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><IoIosHeartEmpty size={24} /></button>
+          <button onClick={() => navigate("/profile")} title="Profil" className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><IoPersonOutline size={24} /></button>
           <button onClick={toggleDark} className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}>
             {darkMode ? <IoSunnyOutline size={24} /> : <IoMoonOutline size={24} />}
           </button>

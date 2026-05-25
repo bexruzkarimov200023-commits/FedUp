@@ -11,6 +11,7 @@ import Vakansi from './pages/Vakansi'
 import { Routes, Route } from 'react-router-dom'
 import Favorites from "./pages/Favorites";
 import Card from './pages/Card'
+import Profile from './pages/Profile'
 export default function App() {
   return (
     <div>
@@ -25,6 +26,7 @@ export default function App() {
       <Route path='/vakansi' element={<Vakansi/>}/>
       <Route path='/favorites' element={<Favorites/>}/>
       <Route path='/card' element={<Card/>}/>
+      <Route path='/profile' element={<Profile/>}/>
     </Routes>
   <Footer/>
 </React.Fragment>
