@@ -9,7 +9,7 @@ import Menu from './pages/Menu'
 import Onas from './pages/Onas'
 import Vakansi from './pages/Vakansi'
 import { Routes, Route } from 'react-router-dom'
-import Favorites from './pages/Fovorites'
+import Favorites from "./pages/Favorites";
 import Card from './pages/Card'
 export default function App() {
   return (

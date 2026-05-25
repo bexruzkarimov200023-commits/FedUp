@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io' // Yurakcha ikonasi uchun
+import { zustandStore } from '../utils/zustandStore'
 
 const slides = [
   {
@@ -57,10 +60,44 @@ const slides = [
   },
 ]
 
-const NAV_LINKS = ['About Us', 'Menu', 'Stock', 'Vacancies', 'Branches', 'Contacts']
+// 100 TA MAHSULOTLAR RO'YXATI (MOCK DATA)
+const generateProducts = () => {
+  const names = ['Family Set', 'Donar Combo', 'Premium Burger', 'Lavash', 'Pepperoni Pizza', 'Salat Caesar', 'Shish Kebab', 'Fried Chicken', 'Beefsteak', 'Falafel Wrap'];
+  const emojis = ['🍟', '🌮', '🍔', '🌯', '🍕', '🥗', '🍖', '🍗', '🥩', '🫔'];
+  const products = [];
+  
+  for (let i = 1; i <= 100; i++) {
+    const nameIndex = (i - 1) % names.length;
+    const emojiIndex = (i - 1) % emojis.length;
+    const hasOldPrice = Math.random() > 0.3;
+    
+    products.push({
+      id: i,
+      name: `${names[nameIndex]} #${i}`,
+      price: (20000 + Math.random() * 80000).toFixed(0),
+      oldPrice: hasOldPrice ? (30000 + Math.random() * 90000).toFixed(0) : null,
+      emoji: emojis[emojiIndex],
+      desc: `Eng zo'r ${names[nameIndex]} retseptasi bilan tayyorlangan.`
+    });
+  }
+  return products;
+};
+
+const feedupProducts = generateProducts();
+
+const NAV_LINKS = [
+  { label: 'About Us', path: '/O nas' },
+  { label: 'Menu', path: '/menu' },
+  { label: 'Vacancies', path: '/vakansi' },
+  { label: 'Branches', path: '/filial' },
+  { label: 'Contacts', path: '/kontakt' }
+]
 
 export default function Home() {
   const [current, setCurrent] = useState(0)
+  const [favorites, setFavorites] = useState([])
+  const [cart, setCart] = useState([])
+  const navigate = useNavigate()
   const timerRef = useRef(null)
 
   const goTo = (n) => setCurrent((n + slides.length) % slides.length)
@@ -80,12 +117,42 @@ export default function Home() {
     return () => window.removeEventListener('keydown', handler)
   }, [current])
 
-  
   const touchStartX = useRef(0)
   const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX }
   const onTouchEnd = (e) => {
     const dx = e.changedTouches[0].clientX - touchStartX.current
     if (Math.abs(dx) > 50) move(dx < 0 ? 1 : -1)
+  }
+
+  // YURAKCHA CLICK HANDLER
+  const handleAddToFavorites = (product) => {
+    const isFavorited = favorites.some(fav => fav.id === product.id)
+    let updatedFavorites
+    if (isFavorited) {
+      updatedFavorites = favorites.filter(fav => fav.id !== product.id)
+    } else {
+      updatedFavorites = [...favorites, product]
+    }
+    setFavorites(updatedFavorites)
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites))
+  }
+
+  // SAVATGA QO'SHISH HANDLER - QUANTITY BILAN
+  const handleAddToCart = (product) => {
+    const cartItem = {
+      ...product,
+      cartId: Date.now() + Math.random(), // Unique ID har bir add uchun
+      quantity: 1
+    }
+    const updatedCart = [...cart, cartItem]
+    setCart(updatedCart)
+    localStorage.setItem('cart', JSON.stringify(updatedCart))
+    navigate('/card')
+  }
+
+  // YURAKCHA CLICK - FAVORITES GA O'TISH
+  const handleFavoriteClick = () => {
+    navigate('/favorites')
   }
 
   const s = slides[current]
@@ -94,9 +161,9 @@ export default function Home() {
     <div style={{ fontFamily: "'Nunito', sans-serif", margin: 0, padding: 0 }}>
       
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap');
+        @import url('https://googleapis.com');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { overflow-x: hidden; }
+        body { overflow-x: hidden; background-color: #fcfcfc; }
         .nav-link {
           text-decoration: none; color: #222; font-size: 15px; font-weight: 700;
           position: relative; padding-bottom: 3px; transition: color .2s;
@@ -139,55 +206,34 @@ export default function Home() {
           0%, 100% { transform: translateY(0px) rotate(-3deg); }
           50% { transform: translateY(-18px) rotate(3deg); }
         }
+        
+        /* MAHSULOT KARTALARI STILI */
+        .product-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 25px;
+          margin-top: 30px;
+        }
+        .product-card {
+          background: #fff; border-radius: 24px; padding: 24px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: all 0.3s ease;
+          position: relative; border: 1px solid #f0f0f0;
+          display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .product-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
       `}</style>
 
-      <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 32px', height: 64,
-        background: '#fff', borderBottom: '1.5px solid #f0f0f0',
-        position: 'sticky', top: 0, zIndex: 100,
-        boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-      }}>
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, cursor: 'pointer', userSelect: 'none' }}>
-          <span style={{ fontSize: 22, fontWeight: 900, letterSpacing: -1, color: '#111' }}>feed</span>
-          <span style={{
-            background: '#e8000e', color: '#fff', borderRadius: '50%',
-            width: 32, height: 32, display: 'inline-flex', alignItems: 'center',
-            justifyContent: 'center', fontSize: 16, marginLeft: 3, fontWeight: 900,
-          }}>up</span>
-        </div>
-
-        
-        <ul style={{ display: 'flex', gap: 28, listStyle: 'none' }}>
-          {NAV_LINKS.map(link => (
-            <li key={link}>
-              <a href="#" className="nav-link">{link}</a>
-            </li>
-          ))}
-        </ul>
-
-       
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <button className="btn-order">Order type</button>
-          <div>
-            <div style={{ fontSize: 15, fontWeight: 800, color: '#111' }}>+998 71 200 22 11</div>
-            <div style={{ fontSize: 11, color: '#888', fontWeight: 600 }}>Daily from 09:00 to 02:45</div>
-          </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            {['🔍','🛒','🤍','🌐','👤','🌙'].map((icon, i) => (
-              <button key={i} className="nav-icon-btn">{icon}</button>
-            ))}
-          </div>
-        </div>
-      </nav>
-
-     
+      {/* SLIDER BLOKI */}
       <div
         style={{ position: 'relative', overflow: 'hidden', width: '100%', height: 520 }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
+        <button className="arrow-btn prev" onClick={() => move(-1)}>←</button>
+        <button className="arrow-btn next" onClick={() => move(1)}>→</button>
         
         <div style={{
           display: 'flex', height: '100%',
@@ -238,7 +284,7 @@ export default function Home() {
                     {slide.script}
                   </div>
 
-                  
+                  {/* SIZNING KODINGIZ KESILIB QOLGAN VA TO'G'RILANGAN JOYI */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
                     <span style={{ fontSize: 20, fontWeight: 900, color: slide.discountColor }}>
                       {slide.discount}
@@ -250,17 +296,9 @@ export default function Home() {
                     }}>
                       {slide.priceNew}
                     </span>
-                    <span style={{
-                      fontSize: 20, fontWeight: 700,
-                      textDecoration: 'line-through',
-                      color: slide.priceOldColor,
-                    }}>
-                      {slide.priceOld}
-                    </span>
                   </div>
                 </div>
 
-                
                 <div style={{
                   flex: 1, display: 'flex', alignItems: 'flex-end',
                   justifyContent: 'center', height: '100%', maxWidth: 420,
@@ -280,11 +318,6 @@ export default function Home() {
           ))}
         </div>
 
-        
-        <button className="arrow-btn prev" onClick={() => move(-1)}>←</button>
-        <button className="arrow-btn next" onClick={() => move(1)}>→</button>
-
-        
         <div style={{
           position: 'absolute', bottom: 18, left: '50%', transform: 'translateX(-50%)',
           display: 'flex', gap: 8, zIndex: 10,
@@ -297,6 +330,77 @@ export default function Home() {
               onClick={() => goTo(i)}
             />
           ))}
+        </div>
+      </div>
+
+      {/* MAHSULOTLAR RO'YXATI */}
+      <div style={{ padding: '40px 80px' }}>
+        <h2 style={{ fontSize: 32, fontWeight: 900, color: '#111', marginBottom: 10 }}>
+          Bizning maxsus taklif (100+ Mahsulot)
+        </h2>
+        <div className="product-grid">
+          {feedupProducts.map(product => {
+            const isFavorited = favorites.some(fav => fav.id === product.id)
+            return (
+              <div key={product.id} className="product-card" style={{ position: 'relative' }}>
+                {/* YURAKCHA IKONI - TEPA O'NG BURCHAK */}
+                <button
+                  onClick={() => handleAddToFavorites(product)}
+                  style={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 12,
+                    background: 'none',
+                    border: 'none',
+                    fontSize: 28,
+                    cursor: 'pointer',
+                    color: isFavorited ? '#e8000e' : '#ccc',
+                    transition: 'color 0.3s',
+                    zIndex: 5,
+                    padding: 0,
+                  }}
+                  title="Sevimlilar"
+                >
+                  {isFavorited ? <IoIosHeart /> : <IoIosHeartEmpty />}
+                </button>
+
+                <div style={{ fontSize: 80, marginBottom: 15 }}>{product.emoji}</div>
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: '#111', marginBottom: 8 }}>
+                  {product.name}
+                </h3>
+                <p style={{ fontSize: 13, color: '#666', marginBottom: 15, flexGrow: 1 }}>
+                  {product.desc}
+                </p>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                  <span style={{
+                    fontSize: 24, fontWeight: 900, color: '#e8000e'
+                  }}>
+                    {product.price} so'm
+                  </span>
+                  {product.oldPrice && (
+                    <span style={{
+                      fontSize: 16, textDecoration: 'line-through',
+                      color: '#999'
+                    }}>
+                      {product.oldPrice}
+                    </span>
+                  )}
+                </div>
+                <button 
+                  onClick={() => handleAddToCart(product)}
+                  style={{
+                    marginTop: 15, background: '#e8000e', color: '#fff',
+                    border: 'none', padding: '12px 20px', borderRadius: 15,
+                    fontWeight: 700, cursor: 'pointer', transition: 'background .2s', width: '100%'
+                  }} 
+                  onMouseEnter={(e) => e.target.style.background = '#c0000b'}
+                  onMouseLeave={(e) => e.target.style.background = '#e8000e'}
+                >
+                  Savatga qo'sh
+                </button>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
