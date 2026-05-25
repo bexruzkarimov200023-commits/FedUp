@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
-import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
+import { IoIosHeartEmpty } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
 import { IoMoonOutline } from "react-icons/io5";
 import { IoSunnyOutline } from "react-icons/io5";
@@ -12,80 +12,89 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { darkMode, toggleDark } = zustandStore();
+  
   return (
     <>
-      <div className={`fixed top-0 left-0 right-0 flex justify-between items-center p-3 z-50 ${darkMode ? "bg-gray-900 text-white border-b border-gray-700" : "bg-white border-b border-gray-200"}`}>
+      {/* 1. TO'G'IRLASH: max-w va flex-wrap qo'shildi, elementlar sig'maganda buzilmaydi */}
+      <div className={`fixed top-0 left-0 right-0 flex justify-between items-center p-3 z-50 transition-all ${darkMode ? "bg-gray-900 text-white border-b border-gray-700" : "bg-white border-b border-gray-200"}`}>
+        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-2">
+          
+          {/* Chap tomon: Logotip va menyu */}
+          {/* hidden md:flex qo'shildi: menyular faqat planshet/kompyuterda ko'rinadi */}
+          <div className="flex items-center gap-4 md:gap-5 flex-1 min-w-0">
+            <Link to={"/"} className="shrink-0">
+              <img
+                src="https://feedup.uz/images/feedup/logo.svg"
+                alt="Logo"
+                width={90}
+                className="md:w-[100px]"
+              />
+            </Link>
 
-        <div className="flex gap-5 items-center flex-1">
-          <Link to={"/"}>
-            <img
-              src="https://feedup.uz/images/feedup/logo.svg"
-              alt=""
-              width={100}
-            />
-          </Link>
+            <div className="hidden lg:flex items-center gap-4 text-sm font-medium whitespace-nowrap">
+              <Link to={"/O nas"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>O нас</Link>
+              <Link to={"/menu"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Меню</Link>
+              <Link to={"/vakansi"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Вакансии</Link>
+              <Link to={"/filial"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Филиалы</Link>
+              <Link to={"/kontakt"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Контакты</Link>
+            </div>
+          </div>
 
-          <Link to={"/O nas"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>O нас</Link>
-          <Link to={"/menu"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Меню</Link>
-          <Link to={"/vakansi"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Вакансии</Link>
-          <Link to={"/filial"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Филиалы</Link>
-          <Link to={"/kontakt"} className={darkMode ? "text-gray-300 hover:text-red-500" : "text-gray-700 hover:text-red-600"}>Контакты</Link>
-        </div>
+          {/* O'ng tomon: Buyurtma turi, telefon va ikonkalari */}
+          {/* shrink-0 qo'shildi: bu blok aslo siqilib kichrayib ketmaydi */}
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+            <button
+              onClick={() => setOpen(true)}
+              className="bg-red-600 text-white px-3 py-1.5 md:px-5 md:py-2 text-xs md:text-sm rounded-full font-semibold cursor-pointer hover:bg-red-700 transition whitespace-nowrap"
+            >
+              Тип заказа
+            </button>
 
-        <div className="flex gap-5 items-center">
+            {/* hidden sm:flex qo'shildi: telefon raqami juda kichik telefonlarda yashiriladi */}
+            <p className={`hidden sm:flex flex-col items-center text-right leading-tight ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+              <span className="block font-bold text-xs md:text-sm whitespace-nowrap">
+                +998 71 200 22 11
+              </span>
+              <span className={`block text-[10px] md:text-xs whitespace-nowrap ${darkMode ? "text-gray-500" : "text-gray-400"}`}>
+                Ежедневно с 09:00 до 02:45
+              </span>
+            </p>
 
-          <button
-            onClick={() => setOpen(true)}
-            className="bg-red-600 text-white px-6 py-2 rounded-full cursor-pointer hover:bg-red-700 transition"
-          >
-            Тип заказа
-          </button>
+            {/* Ikonkalar o'lchami mobil qurilmalarga moslashtirildi */}
+            <div className="flex items-center gap-1.5 md:gap-3">
+              <button className={`${darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"} p-1`}><CiSearch size={22} /></button>
+              <button onClick={() => navigate("/card")} title="Savat" className={`${darkMode ? "text-gray-400 hover:text-red-500 relative" : "text-gray-600 hover:text-red-600 relative"} p-1`}>
+                <HiOutlineShoppingCart size={22} />
+              </button>
+              <button onClick={() => navigate("/favorites")} title="Sevimlilar" className={`${darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"} p-1`}><IoIosHeartEmpty size={22} /></button>
+              <button onClick={() => navigate("/profile")} title="Profil" className={`${darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"} p-1`}><IoPersonOutline size={22} /></button>
+              <button onClick={toggleDark} className={`${darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"} p-1`}>
+                {darkMode ? <IoSunnyOutline size={22} /> : <IoMoonOutline size={22} />}
+              </button>
+            </div>
+          </div>
 
-          <p className={`flex flex-col items-center ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-            <span className="block font-bold">
-              +998 71 200 22 11
-            </span>
-
-            <span className={`block text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>
-              Ежедневно с 09:00 до 02:45
-            </span>
-          </p>
-
-          <button className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><CiSearch size={24} /></button>
-          <button onClick={() => navigate("/card")} title="Savat" className={darkMode ? "text-gray-400 hover:text-red-500 relative" : "text-gray-600 hover:text-red-600 relative"}>
-            <HiOutlineShoppingCart size={24} />
-          </button>
-          <button onClick={() => navigate("/favorites")} title="Sevimlilar" className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><IoIosHeartEmpty size={24} /></button>
-          <button onClick={() => navigate("/profile")} title="Profil" className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}><IoPersonOutline size={24} /></button>
-          <button onClick={toggleDark} className={darkMode ? "text-gray-400 hover:text-red-500" : "text-gray-600 hover:text-red-600"}>
-            {darkMode ? <IoSunnyOutline size={24} /> : <IoMoonOutline size={24} />}
-          </button>
         </div>
       </div>
 
+      {/* 2. MUHIM TO'G'IRLASH: Header fixed bo'lgani uchun uning tagidan bo'sh joy ochib beradi */}
+      <div className="h-[65px] md:h-[75px]" />
+
+      {/* Modal oyna qismi o'zgarishsiz qoldi */}
       {open && (
         <div
           className={`fixed inset-0 ${darkMode ? "bg-black/70" : "bg-black/50"} flex items-center justify-center z-50 backdrop-blur-sm`}
           onClick={() => setOpen(false)}
         >
-
           <div
-            className={`${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"} w-96 rounded-3xl p-8 shadow-2xl`}
+            className={`${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"} w-96 rounded-3xl p-8 shadow-2xl m-4`}
             onClick={(e) => e.stopPropagation()}
-            style={{
-              animation: 'slideUp 0.3s ease-out'
-            }}
+            style={{ animation: 'slideUp 0.3s ease-out' }}
           >
             <style>{`
               @keyframes slideUp {
-                from {
-                  opacity: 0;
-                  transform: translateY(30px);
-                }
-                to {
-                  opacity: 1;
-                  transform: translateY(0);
-                }
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
               }
             `}</style>
 
@@ -120,10 +129,9 @@ export default function Header() {
                 <span>Restoranda</span>
               </button>
             </div>
-
           </div>
         </div>
       )}
     </>
   );
-};
+}
