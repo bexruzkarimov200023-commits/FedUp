@@ -7,7 +7,7 @@ import { IoPersonOutline } from "react-icons/io5";
 import { IoMoonOutline } from "react-icons/io5";
 import { IoSunnyOutline } from "react-icons/io5";
 import { zustandStore } from "../utils/zustandStore";
-
+// Shahriyor
 export default function Header() {
 
   const [open, setOpen] = useState(false);
@@ -25,7 +25,7 @@ export default function Header() {
             />
           </Link>
 
-          <Link to={"/O nas"}>O нас</Link>
+          <Link to={"/O nas"}>О нас</Link>
           <Link to={"/menu"}>Меню</Link>
           <Link to={"/vakansi"}>Вакансии</Link>
           <Link to={"/filial"}>Филиалы</Link>
@@ -52,8 +52,8 @@ export default function Header() {
           </p>
 
           <button><CiSearch /></button>
-          <button><HiOutlineShoppingCart /></button>
-          <button><IoIosHeartEmpty /></button>
+          <Link to={"/card"}><HiOutlineShoppingCart /></Link>
+          <Link to={"/favorites"}> <IoIosHeartEmpty /></Link>
           <button><IoPersonOutline /></button>
           <button onClick={toggleDark} >
             {darkMode ? <IoMoonOutline /> : <IoSunnyOutline />}
