@@ -18,6 +18,8 @@ export default function Onas() {
         fontSize: 32,
         fontWeight: 900,
         marginBottom: 30,
+
+
         color: darkMode ? '#fff' : '#111'
       }}>
         ℹ️ Biz Haqimizda
@@ -38,6 +40,75 @@ export default function Onas() {
           Biz haqimizda sahifasi hozir tayyorlanmoqda. Iltimos, kuting...
         </p>
       </div>
+      
+    <div className="min-h-screen bg-[#1d1e2c] text-white px-6 py-8">
+      
+     
+      <div className="text-gray-400 text-sm flex gap-2 mb-6">
+        <span>Главная</span>
+        <span>›</span>
+        <span className="text-white">О нас</span>
+      </div>
+
+      
+      <h1 className="text-5xl font-bold mb-8">О нас</h1>
+
+      
+      <div className="w-full max-w-6xl mx-auto rounded-3xl overflow-hidden">
+        <img
+          src="https://i.imgur.com/8Km9tLL.png"
+          alt="about"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+     
+      <div className="max-w-5xl mx-auto mt-10 text-gray-300 leading-8 text-lg">
+        <p>
+        
+  
+    <div className="min-h-screen bg-[#1d1e2c] text-white px-6 py-8">
+      
+     
+      <div className="text-gray-400 text-sm flex gap-2 mb-6">
+        <span>Главная</span>
+        <span>›</span>
+        <span className="text-white">О нас</span>
+      </div>
+
+    
+      <h1 className="text-5xl font-bold mb-8">О нас</h1>
+
+     
+      <div className="w-full max-w-6xl mx-auto rounded-3xl overflow-hidden">
+        <img
+          src="https://feedup.uz/_next/image?url=https%3A%2F%2Fcdn.zoomda.uz%2Fpages%2F2025%2F06%2F18%2F1750258595660851782.png&w=1920&q=75"
+          alt="about"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+     
+      <div className="max-w-5xl mx-auto mt-10 text-gray-300 leading-8 text-lg">
+        <p>
+         
+        </p>
+
+        <p className="mt-6">
+          Наша цель — сделать процесс заказа максимально простым и приятным.
+          Мы ценим качество, скорость и комфорт наших клиентов.
+        </p>
+      </div>
+    </div>
+        </p>
+
+        <p className="mt-6">
+          Наша цель — сделать процесс заказа максимально простым и приятным.
+          Мы ценим качество, скорость и комфорт наших клиентов.
+        </p>
+      </div>
+    </div>
+
     </div>
   )
 }
